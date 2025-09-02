@@ -26,4 +26,4 @@ class Solution {
 
 }
 
-![6b325dad8b448e95b957855ca345c4dd](C:\Users\梁倩\Desktop\LeetCodeRecord\top-100-liked.assets\6b325dad8b448e95b957855ca345c4dd.png)
+![6b325dad8b448e95b957855ca345c4dd](./top-100-liked.assets/6b325dad8b448e95b957855ca345c4dd.png)

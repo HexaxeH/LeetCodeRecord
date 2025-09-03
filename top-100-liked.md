@@ -28,7 +28,7 @@ class Solution {
 }
 ```
 
-![6b325dad8b448e95b957855ca345c4dd](./top-100-liked.assets/6b325dad8b448e95b957855ca345c4dd.png)
+![6b325dad8b448e95b957855ca345c4dd](./top-100-liked.assets/)
 
 #### [283. 移动零](https://leetcode.cn/problems/move-zeroes/)
 
@@ -53,7 +53,7 @@ public:
 };
 ```
 
-![5e3dc1c990f8c150df451810a6371cf4](.\top-100-liked.assets\5e3dc1c990f8c150df451810a6371cf4.png)
+![94a43ba8365d2f34c14a7d6c27b05f8d](./top-100-liked.assets/94a43ba8365d2f34c14a7d6c27b05f8d.png)
 
 #### [160. 相交链表](https://leetcode.cn/problems/intersection-of-two-linked-lists/)
 
@@ -87,4 +87,4 @@ public:
 };
 ```
 
-![5642a075331e1ce4564899b0bdb8d34c](.\top-100-liked.assets\5642a075331e1ce4564899b0bdb8d34c.png)
+![5642a075331e1ce4564899b0bdb8d34c](./top-100-liked.assets/5e3dc1c990f8c150df451810a6371cf4.png)

@@ -28,7 +28,7 @@ class Solution {
 }
 ```
 
-![6b325dad8b448e95b957855ca345c4dd](./top-100-liked.assets/)
+![6b325dad8b448e95b957855ca345c4dd](./top-100-liked.assets/6b325dad8b448e95b957855ca345c4dd.png)
 
 #### [283. 移动零](https://leetcode.cn/problems/move-zeroes/)
 

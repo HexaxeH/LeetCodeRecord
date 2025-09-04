@@ -88,3 +88,98 @@ public:
 ```
 
 ![5642a075331e1ce4564899b0bdb8d34c](./top-100-liked.assets/5e3dc1c990f8c150df451810a6371cf4.png)
+
+
+
+#### [206. 反转链表](https://leetcode.cn/problems/reverse-linked-list/)
+
+思路：用头插法反转链表，将原链表节点逐个移到新链表头部，实现顺序颠倒。
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* newHead = new ListNode();
+        ListNode* p = head;
+        while(p){
+            ListNode* temp = p->next;
+            p->next=newHead->next;
+            newHead->next=p;
+            p=temp;
+        }
+        ListNode* result = new ListNode();
+        result= newHead->next;
+        return result;
+    }
+};
+```
+
+![image-20250904185402829](./top-100-liked.assets/image-20250904185402829.png)
+
+#### [234. 回文链表](https://leetcode.cn/problems/palindrome-linked-list/)
+
+思路：通过尾插法复制原链表得到相同顺序的副本，再用头插法反转该副本得到逆序链表，最后比较原链表与逆序链表是否一致来判断是否为回文。
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        ListNode* copyHead = new ListNode();
+        ListNode* t = copyHead;
+        ListNode* curr = head;
+        //复制
+        while (curr) {
+            ListNode* newNode = new ListNode(curr->val);
+            t->next = newNode; 
+            t = t->next;
+            curr = curr->next;
+        }
+        ListNode* reversedCopyHead = reverseList(copyHead);
+        // 比较原链表和反转后的复制链表
+        curr = head;
+        while (curr&& reversedCopyHead) {
+            if (curr->val != reversedCopyHead->val) {
+                return false;
+            }
+            curr = curr->next;
+            reversedCopyHead = reversedCopyHead->next;
+        }
+        return true;
+    }
+//反转复制的链表
+    ListNode* reverseList(ListNode* head) {
+        ListNode* newHead = new ListNode();
+        ListNode* p = head;
+        while (p) {
+            ListNode* temp = p->next;
+            p->next = newHead->next;
+            newHead->next = p;
+            p = temp;
+        }
+        ListNode* result = newHead->next;
+        return result;
+    }
+};
+```
+
+![image-20250904191836610](./top-100-liked.assets/image-20250904191836610.png)

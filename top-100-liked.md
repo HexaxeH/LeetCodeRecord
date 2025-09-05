@@ -183,3 +183,80 @@ public:
 ```
 
 ![image-20250904191836610](./top-100-liked.assets/image-20250904191836610.png)
+
+#### [141. 环形链表](https://leetcode.cn/problems/linked-list-cycle/)
+
+思路：用哈希集合记录已访问节点，从表头开始遍历：若当前节点在集合中，说明有环；若不在，则加入集合并继续遍历下一个节点。visited.count()用于检查集合中是否存在指定元素
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        unordered_set<ListNode*> visited;
+        ListNode* p = head;
+        while(p){
+            if(visited.count(p)){
+                return true;
+            }
+            visited.insert(p);
+            p=p->next;
+        }
+        return false;
+    }
+};
+```
+
+![image-20250905171320554](./top-100-liked.assets/image-20250905171320554.png)
+
+#### [21. 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/)
+
+思路：`newlist`作为合并的新链表开头，用指针`p`构建新链表，`p1`、`p2`分别遍历两个输入链表。比较`p1`和`p2`指向的值，将较小节点接入新链表，同时移动对应指针，遍历结束后，因为输入链表是升序排列，所以直接将剩余链表接入新链表尾部
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode* p1 = list1;
+        ListNode* p2 = list2;
+        ListNode* newlist = new ListNode();
+        ListNode* p = newlist;
+        while(p1&&p2){
+            if(p1->val<=p2->val){
+                p->next = p1;
+                p1=p1->next;
+            }else{
+                p->next = p2;
+                p2=p2->next;
+            }
+            p=p->next;
+        }
+        if(p1){
+            p->next = p1;
+        }else{
+            p->next=p2;
+        }
+        ListNode* result = newlist->next;
+        return result;
+    }
+};
+```
+
+![image-20250905173107827](./top-100-liked.assets/image-20250905173107827.png)

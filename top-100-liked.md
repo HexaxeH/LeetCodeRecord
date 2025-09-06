@@ -260,3 +260,69 @@ public:
 ```
 
 ![image-20250905173107827](./top-100-liked.assets/image-20250905173107827.png)
+
+#### [94. 二叉树的中序遍历](https://leetcode.cn/problems/binary-tree-inorder-traversal/)
+
+思路：采用递归方式实现中序遍历，按照左子树 、根节点 、右子树（中序遍历规则）访问节点，通过**引用传递**节点的值，直到为空节点。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> reslut;
+        traversal(root,reslut);
+        return reslut;
+    }
+    void traversal(TreeNode* node,vector<int>& val){
+        if(node==nullptr)
+        return;
+        traversal(node->left,val);
+        val.push_back(node->val);
+        traversal(node->right,val);
+    }
+};
+```
+
+![image-20250906203945300](./top-100-liked.assets/image-20250906203945300.png)
+
+#### [104. 二叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-binary-tree/)
+
+思路：使用深度优先搜索计算二叉树最大深度。以空节点深度为 0 作为终止条件，递归计算当前节点左右子树的最大深度，取两者中的最大值加 1（计入当前节点），即为当前节点所在子树的最大深度。从**叶子节点**逐层向上叠加，最终得到整棵树的最大深度。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root == nullptr)
+        return 0;
+        int leftDepth = maxDepth(root->left);
+        int rightDepth = maxDepth(root->right);
+        return max(leftDepth,rightDepth)+1;
+    }
+};
+```
+
+![image-20250906210653308](./top-100-liked.assets/image-20250906210653308.png)
+

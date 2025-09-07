@@ -326,3 +326,73 @@ public:
 
 ![image-20250906210653308](./top-100-liked.assets/image-20250906210653308.png)
 
+#### [226. 翻转二叉树](https://leetcode.cn/problems/invert-binary-tree/)
+
+思路：采用**递归**思路，先判断当前节点是否为空，若为空则直接返回；否则递归翻转当前节点的左子树和右子树，然后交换当前节点的左右子树指针，最终返回处理后的当前节点，从而实现整棵二叉树的翻转。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if(root == nullptr){
+            return nullptr;
+        }
+        TreeNode* left = invertTree(root->left);
+        TreeNode* right = invertTree(root->right);
+        root->left = right;
+        root->right = left;
+        return root;
+    }
+};
+```
+
+![image-20250907161532588](./top-100-liked.assets/image-20250907161532588.png)
+
+#### [101. 对称二叉树](https://leetcode.cn/problems/symmetric-tree/)
+
+思路：还是通过递归，先检查根节点是否为空（空树视为对称），否则调用symmetric函数比较左右子树；辅助函数先判断两节点是否都为空（对称）或仅有一个为空（不对称），再比较节点值是否相等，最后递归比较左节点的左子树与右节点的右子树、左节点的右子树与右节点的左子树，只有所有对应位置都满足条件才返回对称。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(root == nullptr)
+        return true;
+        return symmetric(root->left,root->right);
+    }
+    bool symmetric(TreeNode* left,TreeNode* right){
+        if(!left && !right)
+        return true;
+        if(!left || !right)
+        return false;
+        if(left->val != right->val){
+            return false;
+        }
+        return symmetric(left->left,right->right)&&symmetric(left->right,right->left);
+    }
+};
+```
+
+![image-20250907163254849](./top-100-liked.assets/image-20250907163254849.png)

@@ -396,3 +396,77 @@ public:
 ```
 
 ![image-20250907163254849](./top-100-liked.assets/image-20250907163254849.png)
+
+#### [543. 二叉树的直径](https://leetcode.cn/problems/diameter-of-binary-tree/)
+
+思路：遍历所有节点，算出每个节点的 "左段长度 + 右段长度"，其中最大的那个值就是整个树的直径。通过递归的方式，一边计算每个节点往下能伸多远（深度），一边把左右两段加起来和当前最大直径比一比，更新最大的那个值。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+    int maxDiameter = 0;
+    int depth(TreeNode* root) {
+        if(root == nullptr) return 0;
+        
+        int leftDepth = depth(root->left);
+        int rightDepth = depth(root->right);
+        maxDiameter = max(maxDiameter, leftDepth + rightDepth);
+        return max(leftDepth, rightDepth) + 1;
+    }
+    
+public:
+    int diameterOfBinaryTree(TreeNode* root) {
+        if(root == nullptr) return 0;
+        depth(root);
+        return maxDiameter;
+    }
+};
+```
+
+![image-20250908181201727](./top-100-liked.assets/image-20250908181201727.png)
+
+#### [108. 将有序数组转换为二叉搜索树](https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/)
+
+思路：以**二分法**选取数组中间元素作为当前子树的根节点（保证左右子树平衡），再**递归**地用同样方法将中间元素左侧数组构建为左子树、右侧数组构建为右子树，最终形成满足 “左小右大” 特性且左右高度差不超过 1 的平衡二叉搜索树。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* traversal(vector<int>& nums, int left, int right) {
+        if (left > right) {
+            return nullptr;
+        }
+        int mid = left + (right - left)/2;
+        TreeNode* root = new TreeNode(nums[mid]);
+        root->left = traversal(nums, left, mid - 1);
+        root->right = traversal(nums, mid + 1, right);
+        return root;
+    }
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        return traversal(nums, 0, nums.size() - 1);
+    }
+};
+```
+
+![image-20250908195547418](./top-100-liked.assets/image-20250908195547418.png)

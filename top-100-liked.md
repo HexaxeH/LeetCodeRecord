@@ -470,3 +470,53 @@ public:
 ```
 
 ![image-20250908195547418](./top-100-liked.assets/image-20250908195547418.png)
+
+#### [35. 搜索插入位置](https://leetcode.cn/problems/search-insert-position/)
+
+思路：通过二分查找：先用左右指针分别指向数组的起始和末尾，然后在左右指针未交叉（left ≤ right）的循环中，不断计算中间位置 mid，将数组中间元素与目标值对比： 若中间元素小于目标值，说明目标值在 mid 右侧，将 left 移至 mid+1；若中间元素大于等于目标值，说明目标值在 mid 左侧或就是 mid，将 right 移至 mid-1。当循环结束时，left 指针恰好停在**第一个大于等于目标值的位置**，这个位置就是目标值插入后能保持数组有序的正确位置，直接返回 left 即可。
+
+```c++
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+    int left=0,right=nums.size()-1;
+    while(left<=right){
+        int mid=(left+right)/2;
+        if(nums[mid]<target){
+            left=mid+1;
+        }else{
+            right=mid-1;
+        }
+    }
+    return left;
+    }
+};
+```
+
+![image-20250909200447462](./top-100-liked.assets/image-20250909200447462.png)
+
+#### [20. 有效的括号](https://leetcode.cn/problems/valid-parentheses/)
+
+思路：用栈来匹配括号：遍历字符串时，遇到左括号（'(', '[', '{'）就暂时存到栈里；遇到右括号时，就检查栈顶是否有对应的左括号（比如 ')' 对应 '(', '}' 对应 '{'），如果没有对应左括号或栈为空（没左括号可匹配），就说明无效；如果匹配上了，就把栈顶的左括号移除。最后如果栈空了，说明所有括号都正确配对，返回有效；否则无效。
+
+```c++
+class Solution {
+public:
+    bool isValid(string s) {
+      stack<int> p;
+      for (int i = 0; i < s.size(); i++) {
+        if (s[i] == '(' || s[i] == '[' || s[i] == '{') p.push(i);
+        else {
+          if (p.empty()) return false;
+          if (s[i] == ')' && s[p.top()] != '(') return false;
+          if (s[i] == '}' && s[p.top()] != '{') return false;
+          if (s[i] == ']' && s[p.top()] != '[') return false;
+          p.pop();
+        }
+      }
+      return p.empty();
+    }
+};
+```
+
+![image-20250909201414018](./top-100-liked.assets/image-20250909201414018.png)

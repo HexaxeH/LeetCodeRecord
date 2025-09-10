@@ -520,3 +520,47 @@ public:
 ```
 
 ![image-20250909201414018](./top-100-liked.assets/image-20250909201414018.png)
+
+#### [121. 买卖股票的最佳时机](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/)
+
+思路：cost 为初始买入成本、 profit 为0，即无交易利润。遍历股价时，用 min 更新最低成本，用 max 计算当前价与最低价的差值，不断刷遍历新最大利润，最终返回结果。
+
+```c++
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int cost = prices[0];
+        int profit = 0;
+        for (int price : prices) {
+            cost = min(cost, price);
+            profit = max(profit, price - cost);
+        }
+        return profit;
+    }
+};
+```
+
+![image-20250910225255939](./top-100-liked.assets/image-20250910225255939.png)
+
+#### [70. 爬楼梯](https://leetcode.cn/problems/climbing-stairs/)
+
+思路：因为每次只能跨1阶或2阶，要到第n级台阶，最后一步要么是从第n-1级跨1阶，要么是从第n-2级跨2阶。 比如已知n=3时有3种跳法（1+1+1、1+2、2+1），n=4时有5种跳法（1+1+1+1、1+2+1、2+1+1、1+1+2、2+2）；求n=5的跳法时，只需给n=4的5种跳法末尾都加1阶（对应最后跨1阶的情况），给n=3的3种跳法末尾都加2阶（对应最后跨2阶的情况），总共5+3=8种，即f(5)=f(4)+f(3)=8，完全符合所以f(n)=f(n-1)+f(n-2)。
+
+通过循环n-1次，不断更新 a 和 b （ a 代表前2级的方法数， b 代表前1级的方法数），最终 b 即为爬到第n级的总方法数。
+
+```c++
+class Solution {
+public:
+    int climbStairs(int n) {
+        int a = 1, b = 1, sum;
+        for(int i = 0; i < n - 1; i++){
+            sum = a + b;
+            a = b;
+            b = sum;
+        }
+        return b;
+    }
+};
+```
+
+![image-20250910225504153](./top-100-liked.assets/image-20250910225504153.png)

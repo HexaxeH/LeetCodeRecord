@@ -564,3 +564,45 @@ public:
 ```
 
 ![image-20250910225504153](./top-100-liked.assets/image-20250910225504153.png)
+
+#### [118. 杨辉三角](https://leetcode.cn/problems/pascals-triangle/)
+
+思路：杨辉三角的性质是每个数等于它左上方和右上方的数之和。**vector<vector<int>> result(numRows)**;创建一个名为result的二维向量，初始化为包含 `numRows` 行。每行初始化为长度等于行数 + 1 且元素全为 1（直接确定首尾的 1）`resize(i + 1, 1)` ，再通过循环计算每行中间元素，其值为上一行对应位置左上方与正上方元素之和。
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> result(numRows);
+        for (int i = 0; i < numRows; i++) {
+            result[i].resize(i + 1, 1);
+            for (int j = 1; j < i; j++) {
+                result[i][j] = result[i - 1][j - 1] + result[i - 1][j];
+            }
+        }
+        return result;
+    }
+};
+```
+
+![image-20250911193044258](./top-100-liked.assets/image-20250911193044258.png)
+
+#### [136. 只出现一次的数字](https://leetcode.cn/problems/single-number/)
+
+思路：题目要求时间复杂度 *O*(*N*) ，空间复杂度 *O*(1) ，因此不能用暴力法。使用哈希表解题，定义`unordered_map<int, int>`类型的哈希表map，键为数组元素，值为该元素出现的次数。第一个循环遍历数组nums，对每个元素执行map[num]++，完成所有元素出现次数的统计（出现两次的元素值会被记为 2，只出现一次的记为 1）。第二个循环再次遍历数组，对每个元素num检查其在哈希表中的次数，若map[num] == 1，则该元素即为目标，直接返回。
+
+```c++
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        unordered_map<int,int> map;
+        for(int num:nums)
+            map[num]++;
+        for(int num:nums)
+            if(map[num] == 1) return num;
+        return 0;
+    }
+};
+```
+
+![image-20250911194932693](./top-100-liked.assets/image-20250911194932693.png)

@@ -606,3 +606,30 @@ public:
 ```
 
 ![image-20250911194932693](./top-100-liked.assets/image-20250911194932693.png)
+
+#### [49. 字母异位词分组](https://leetcode.cn/problems/group-anagrams/)
+
+思路：对于输入的每个字符串，先对其字符进行排序（互为字母异位词的字符串排序后会完全相同），以排序后的字符串作为键，将原字符串存入该键对应的列表中；遍历所有字符串完成分组后，收集映射中所有列表，即为字母异位词的分组结果。
+
+```c++
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        
+        map<string, vector<string>> m;
+        for (int i = 0; i < strs.size(); i++) {
+            string data = strs[i];
+            sort(data.begin(), data.end());
+            m[data].push_back(strs[i]);
+        }
+        vector<vector<string>> ret;
+        for (map<string, vector<string>>::iterator it = m.begin();
+             it!= m.end(); it++) {
+            ret.push_back(it->second);
+        }
+        return ret;
+    }
+};
+```
+
+![image-20250912235238010](./top-100-liked.assets/image-20250912235238010.png)

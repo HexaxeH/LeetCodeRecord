@@ -633,3 +633,34 @@ public:
 ```
 
 ![image-20250912235238010](./top-100-liked.assets/image-20250912235238010.png)
+
+#### [128. 最长连续序列](https://leetcode.cn/problems/longest-consecutive-sequence/)
+
+思路：通过排序使连续元素相邻，再遍历统计最长连续序列长度：首先处理边界情况，若数组为空则返回 0，若只有一个元素则返回 1；之后对数组排序，使连续的元素在数组中相邻排列；接着遍历排序后的数组，通过比较当前元素与下一个元素的关系统计连续序列 —— 若下一个元素是当前元素加 1，说明连续，当前序列长度加 1 并更新最长长度；若下一个元素与当前元素不相等（排除重复元素），则当前序列中断，重置当前长度为 1；若遇到重复元素则不改变当前长度；最后返回记录的最长连续序列长度。
+
+```c++
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        int count=1,n=nums.size();
+        int maxLen=1;
+        if(n==0 || n==1){
+            return n;
+        }
+        sort(nums.begin(),nums.end());
+        for(size_t i=0;i<n-1;++i){          
+                if(nums[i+1]==nums[i]+1){
+                    count++;
+                    if(count>maxLen)
+                        maxLen=count;
+                }else if(nums[i]!=nums[i+1])
+                {
+                    count=1;
+                }
+            }
+            return maxLen;
+    }
+};
+```
+
+![image-20250913171639953](./top-100-liked.assets/image-20250913171639953.png)

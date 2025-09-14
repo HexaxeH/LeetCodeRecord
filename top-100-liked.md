@@ -664,3 +664,29 @@ public:
 ```
 
 ![image-20250913171639953](./top-100-liked.assets/image-20250913171639953.png)
+
+#### [169. 多数元素](https://leetcode.cn/problems/majority-element/)
+
+思路：用哈希表统计数组中各元素的出现次数，先计算数组长度的一半作为判断依据，遍历数组时更新每个元素的计数，一旦某元素的计数超过阈值，即确定为多数元素并返回。
+
+```c++
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+          int mid = nums.size()/2;
+        unordered_map<int,int> map;
+        int n;
+        for(int i = 0; i<nums.size(); i++)
+        {
+            map[nums[i]]++;
+            if(map[nums[i]]>mid)
+            {
+                n  =nums[i];
+            }
+        }
+        return n;
+    }
+};
+```
+
+![image-20250914225414857](./top-100-liked.assets/image-20250914225414857.png)

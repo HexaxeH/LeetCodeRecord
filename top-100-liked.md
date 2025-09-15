@@ -690,3 +690,50 @@ public:
 ```
 
 ![image-20250914225414857](./top-100-liked.assets/image-20250914225414857.png)
+
+#### [15. 三数之和](https://leetcode.cn/problems/3sum/)
+
+思路：立意排序+双指针，先把数组从小到大排序，这样方便后续找符合条件的三个数且避免重复。接着固定第一个数（用i遍历），如果它和前一个数一样就跳过（防止重复结果）。然后把目标值设为这个数的相反数，再用两个指针——一个从第一个数后面开始（j，找第二个数），一个从数组末尾开始（k，找第三个数）。找第二个数时，若它和前一个数一样也跳过（避免重复），之后调整k的位置：只要j在k左边且两数相加比目标值大，就把k往左移（让和变小）。如果j和k碰面了，说明当前i下没符合条件的，就换下一个i；要是两数相加刚好等于目标值，就把这三个数（i、j、k对应的数）存起来，最后遍历完所有情况，得到的就是所有不重复的、和为0的三元组。
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+         vector<vector<int>> ans;
+        sort(nums.begin(),nums.end());
+        int n = nums.size();
+        int k  = 0,target = 0;
+        for(int i = 0;i < n ;i++)
+        {
+            if( i > 0 && nums[i] == nums[i-1])
+            {
+                 continue;
+            }
+            k = n - 1;//指向第三个数的下标
+            target = -nums[i];
+            for(int j= i+1;j < n;j++)
+            {
+                if( j > i + 1 && nums[j] == nums[j-1] )
+                {
+                    continue;
+                }
+                while( j < k && nums[j] + nums[k] > target)
+                {
+                    k--;
+                }
+                if(j == k)
+                {
+                    break;
+                }
+               if(nums[j] + nums[k] == target)
+               {
+                   ans.push_back({nums[i],nums[j],nums[k]});
+               }
+            }
+        }
+        return ans;
+    }
+};
+```
+
+![image-20250915210657047](top-100-liked.assets/image-20250915210657047.png)

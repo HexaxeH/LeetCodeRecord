@@ -737,3 +737,34 @@ public:
 ```
 
 ![image-20250915210657047](top-100-liked.assets/image-20250915210657047.png)
+
+#### [11. 盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/)
+
+思路：双指针：用左右指针分别位于数组两端，通过计算当前指针形成的容器水量（由两指针处高度的最小值与间距决定）并不断在比较后更新最大值，随后始终移动较矮边界的指针（因移动较高边界无法增大水量），最终找到最大水量。
+
+```c++
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int left = 0;                   
+        int right = height.size() - 1;  
+        int max_water = 0;     
+        while (left < right) {
+            int current_water = min(height[left], height[right]) * (right - left);
+
+            if (current_water > max_water) {
+                max_water = current_water;
+            }
+
+            if (height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return max_water;
+    }
+};
+```
+
+![image-20250916232741098](./top-100-liked.assets/image-20250916232741098.png)

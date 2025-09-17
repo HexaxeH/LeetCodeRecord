@@ -768,3 +768,33 @@ public:
 ```
 
 ![image-20250916232741098](./top-100-liked.assets/image-20250916232741098.png)
+
+#### [3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)
+
+思路：通过两层for循环可以实现暴力破解寻找无重复字符串，最外层循环，作为每次生成子字符串的头节点；第二层循环，每次从i位置开始，拼装子字符串，用哈希表记录当前子串中的字符以检查是否重复，一旦遇到重复就停止，同时记录当前子串的长度并更新全局最长长度，最终返回找到的最大长度。
+
+```c++
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int result = 0;
+        int temp = 0;
+        for (int i = 0; i < s.length(); i++){
+            unordered_map<char, int> map;
+            temp = 0;
+            for (int j = i; j < s.length(); j++) {
+                if (map.find(s[j]) != map.end()) {
+                    break;
+                } else {
+                    map[s[j]] = j;
+                    temp++;
+                    result = max(result, temp);
+                }
+            }
+        }
+        return result;
+    }
+};
+```
+
+![image-20250918001248403](./top-100-liked.assets/image-20250918001248403.png)

@@ -798,3 +798,66 @@ public:
 ```
 
 ![image-20250918001248403](./top-100-liked.assets/image-20250918001248403.png)
+
+#### [438. 找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/)
+
+思路：
+
+**findAnagrams 函数**
+
+初始mp1记录p中每个字符的出现次数（固定不变）。mp2：记录s中当前滑动窗口内字符的出现次数（随窗口移动动态更新）。维护一个长度为p.size()的窗口，每次滑动调用`check`函数判断当前窗口是否为p的异位词，若是则记录`left`（起始索引）。然后移动窗口：左边界右移`left++`，需减少mp2中对应字符的频率（若频率变为 0 则从mp2中删除，避免干扰后续判断）；右边界右移`right++`，需增加`mp2`中对应新字符的频率。遍历结束后，所有记录的left即为s中所有p的异位词的起始索引，最终返回这些索引组成的数组ret。
+
+**check 函数**
+
+异位词的本质是 “字符种类和每种字符的出现次数完全相同”，因此用两个map（mp1和mp2）分别存储p和s中当前窗口的字符频率。check函数两点验证是否为异位词：
+
+- 若两个map的大小不同（字符种类不同），直接返回false；
+
+- 遍历mp1中的每个字符，检查mp2中是否存在该字符且频率相同，若有任何不匹配则返回false，否则返回true。
+
+  
+
+```c++
+class Solution {
+public:
+    bool check(map<int,int>& mp1,map<int,int>& mp2)
+    {
+        if (mp1.size() != mp2.size()) 
+            return false;
+ 
+        for (const auto pair : mp1) 
+        {
+            auto it = mp2.find(pair.first);
+            if (it == mp2.end() || it->second != pair.second) 
+                return false;
+        }
+        return true;
+    }
+ 
+    vector<int> findAnagrams(string s, string p)
+    {
+        vector<int> ret;
+        map<int,int> mp1,mp2;
+        for (int i=0;i<p.size();i++)
+        {
+            mp1[p[i]]++;
+            mp2[s[i]]++;
+        }
+            
+        for (int left=0,right=p.size()-1; right<s.size();left++,right++)
+        {
+            if (check(mp1,mp2))
+            {
+                ret.push_back(left);
+            }
+            mp2[s[left]]--;
+            mp2[s[right+1]]++;
+            if (mp2[s[left]]==0)
+                mp2.erase(s[left]);
+        }
+        return ret;
+    }
+};
+```
+
+![image-20250919000147122](./top-100-liked.assets/image-20250919000147122.png)

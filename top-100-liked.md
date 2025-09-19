@@ -861,3 +861,29 @@ public:
 ```
 
 ![image-20250919000147122](./top-100-liked.assets/image-20250919000147122.png)
+
+#### [560. 和为 K 的子数组](https://leetcode.cn/problems/subarray-sum-equals-k/)
+
+思路：利用暴力枚举法，外层循环固定子数组的起始索引left，内层循环从 left 开始遍历结束索引 right，在遍历过程中实时累加从nums [left] 到 nums [right]的元素和 sum，每当sum等于k时，就将count加1，最终返回count（所有符合条件的连续子数组的总数）
+
+```c++
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        int count = 0;
+        int len = nums.size();
+        for (int left = 0; left < len; left++) {
+            int sum = 0;
+            for (int right = left; right < len; right++) {
+                sum += nums[right];
+                if (sum == k) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+};
+```
+
+![image-20250920003203786](./top-100-liked.assets/image-20250920003203786.png)

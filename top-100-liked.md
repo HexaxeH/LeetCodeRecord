@@ -887,3 +887,28 @@ public:
 ```
 
 ![image-20250920003203786](./top-100-liked.assets/image-20250920003203786.png)
+
+#### [53. 最大子数组和](https://leetcode.cn/problems/maximum-subarray/)
+
+思路：通过一次线性遍历，动态维护 “以当前元素结尾的子数组最大和” 与 “全局最大子数组和”。初始化时，两者均设为数组首个元素；遍历后续元素时，若前者为非正数（说明之前的子数组无增益），则从当前元素重新开始计算局部和，否则将当前元素加入局部和；每次更新局部和后，都与全局最大值比较并更新，确保全局最大值始终记录已遍历部分的最优解。
+
+```c++
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int res = nums[0];
+        int maxnum = nums[0];
+        for (int i = 1; i < nums.size(); i++) {
+            if (maxnum <= 0) {
+                maxnum = nums[i];
+            } else if (maxnum > 0) {
+                maxnum += nums[i];
+            }
+            res = max(maxnum, res);
+        }
+        return res;
+    }
+};
+```
+
+![image-20250921234822553](./top-100-liked.assets/image-20250921234822553.png)

@@ -912,3 +912,28 @@ public:
 ```
 
 ![image-20250921234822553](./top-100-liked.assets/image-20250921234822553.png)
+
+#### [189. 轮转数组](https://leetcode.cn/problems/rotate-array/)
+
+思路：通过三次反转操作来实现数组的旋转。给定一个整数数组 nums 和一个整数 k，将数组向右旋转 k 个位置。旋转后，数组的最后 k 个元素会移动到数组的开头，其余元素依次向后移动。首先反转整个数组，使得数组的顺序完全颠倒。再反转前 k 个元素，使得它们恢复到正确的顺序。最后反转剩下的 n - k 个元素，使得它们恢复到正确的顺序
+
+```c++
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {        
+        int n = nums.size();
+        k %= n;
+        reverse(nums,0, n - 1);
+        reverse(nums,0, k - 1);
+        reverse(nums,k, n - 1);
+    }
+private:
+    void reverse(vector<int>& nums, int i, int j) {
+        for (; i < j; i++, j--) {
+            swap(nums[i], nums[j]);
+        }
+    }
+};
+```
+
+![image-20250922233424548](./top-100-liked.assets/image-20250922233424548.png)

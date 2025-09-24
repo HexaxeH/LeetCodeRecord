@@ -937,3 +937,29 @@ private:
 ```
 
 ![image-20250922233424548](./top-100-liked.assets/image-20250922233424548.png)
+
+#### [56. 合并区间](https://leetcode.cn/problems/merge-intervals/)
+
+思路：对所有区间按照「起始值」进行升序排序。排序后，区间的起始值呈现递增趋势，极大简化了重叠判断逻辑。初始化一个结果集合存储合并后的区间，然后逐个遍历排序后的区间，当前区间 [L,R] 与结果集最后区间比较，结果集空或 L > 最后区间结束值（无重叠），直接加入，否则（有重叠），合并（结束值取两者最大）。遍历完成后，结果集合中即为所有合并后的不重叠区间。
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+         sort(intervals.begin(), intervals.end());
+        vector<vector<int>> merged;
+        for (int i = 0; i < intervals.size(); ++i) {
+            int L = intervals[i][0], R = intervals[i][1];
+            if (!merged.size() || merged.back()[1] < L) {
+                merged.push_back({L, R});
+            }
+            else {
+                merged.back()[1] = max(merged.back()[1], R);
+            }
+        }
+        return merged;
+    }
+};
+```
+
+![image-20250924222536761](./top-100-liked.assets/image-20250924222536761.png)

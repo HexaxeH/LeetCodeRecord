@@ -963,3 +963,36 @@ public:
 ```
 
 ![image-20250924222536761](./top-100-liked.assets/image-20250924222536761.png)
+
+#### [238. 除自身以外数组的乘积](https://leetcode.cn/problems/product-of-array-except-self/)
+
+思路：构建两个辅助数组left和right求解：left[i]存储索引i左侧所有元素的乘积，right[i]存储索引i右侧所有元素的乘积；先从左到右遍历计算left数组，再从右到左遍历计算right数组，最后每个位置i的结果answer[i]即为其左侧所有元素乘积（left[i-1]）与右侧所有元素乘积（right[i+1]）的乘积。
+
+```c++
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+          int n = nums.size();
+        vector<int> answer(n);
+        vector<int> left(n);
+        vector<int> right(n);
+        left[0] = nums[0];
+        right[n-1] = nums[n-1];
+        for (int i = 1; i < n; i++) {
+            left[i] = left[i-1] * nums[i];
+        }
+        answer[n-1] = left[n-2];
+        for (int i = n-2; i >= 0; i--) {
+            right[i] = right[i+1] * nums[i];
+            if (i == 0) {
+                answer[i] = right[i+1];
+                continue;
+            }
+            answer[i] = left[i-1] * right[i+1];
+        }
+        return answer;
+    }
+};
+```
+
+![image-20250926232023409](./top-100-liked.assets/image-20250926232023409.png)

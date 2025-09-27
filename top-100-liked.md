@@ -996,3 +996,42 @@ public:
 ```
 
 ![image-20250926232023409](./top-100-liked.assets/image-20250926232023409.png)
+
+#### [73. 矩阵置零](https://leetcode.cn/problems/set-matrix-zeroes/)
+
+思路： 使用两个标记数组去记录初始时0元素的位置，首先创建两个标记数组 `row_mark`（长度为矩阵行数 `m`）和 `column_mark`（长度为矩阵列数 `n`），用于分别记录原始矩阵中存在 0 的行和列；通过第一次遍历矩阵，若遇到元素 `matrix[i][j] == 0`，就将 `row_mark[i]` 和 `column_mark[j]` 设为 1，以此精准标记出所有需要置零的行与列；随后进行第二次遍历，对矩阵中的每个元素 `matrix[i][j]`，只要其所在行被标记（`row_mark[i] == 1`）或所在列被标记（`column_mark[j] == 1`），就将该元素设为 0，最终完成矩阵置零。
+
+```c++
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+         int m = matrix.size();
+        int n = matrix[0].size();
+        vector<int> row_mark(m);
+        vector<int> column_mark(n);
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (matrix[i][j] == 0)
+                {
+                    row_mark[i] = 1;
+                    column_mark[j] = 1;
+                }
+            }
+        }
+         for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (row_mark[i] == 1 || column_mark[j] == 1)
+                {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+    }
+};
+```
+
+![image-20250928000002665](./top-100-liked.assets/image-20250928000002665.png)

@@ -1035,3 +1035,55 @@ public:
 ```
 
 ![image-20250928000002665](./top-100-liked.assets/image-20250928000002665.png)
+
+#### [54. 螺旋矩阵](https://leetcode.cn/problems/spiral-matrix/)
+
+思路：
+初始化：用 `left` 表示左边界（初始为第 0 列），`right` 表示右边界（初始为最后一列），`top` 表示上边界（初始为第 0 行），`bottom` 表示下边界（初始为最后一行）。
+循环打印： “从左向右、从上向下、从右向左、从下向上” 四个方向循环打印。
+根据边界打印，即将元素按顺序添加至列表 `result`尾部。
+边界向内收缩 1 （代表已被打印）。
+每步遍历后通过判断边界是否交叉（如 `top > bottom`、`right < left` 等），决定是否终止循环，若打印完毕则跳出。
+返回值： 返回 result 即可。
+
+```c++
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        int left = 0;
+        int right = matrix[0].size() - 1;
+        int top = 0;
+        int bottom = matrix.size() - 1; 
+        vector<int> result;  
+        while (true) {
+            for (int col = left; col <= right; ++col) {
+                result.push_back(matrix[top][col]);
+            }
+            if (++top > bottom) {
+                break;
+            }
+            for (int row = top; row <= bottom; ++row) {
+                result.push_back(matrix[row][right]);
+            }
+            if (--right < left) {
+                break;
+            }
+            for (int col = right; col >= left; --col) {
+                result.push_back(matrix[bottom][col]);
+            }
+            if (--bottom < top) {
+                break;
+            }
+            for (int row = bottom; row >= top; --row) {
+                result.push_back(matrix[row][left]);
+            }
+            if (++left > right) {
+                break;
+            }
+        }
+       return result;
+    }
+};
+```
+
+![image-20250930234157024](./top-100-liked.assets/image-20250930234157024.png)

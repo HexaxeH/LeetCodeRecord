@@ -1087,3 +1087,29 @@ public:
 ```
 
 ![image-20250930234157024](./top-100-liked.assets/image-20250930234157024.png)
+
+#### [48. 旋转图像](https://leetcode.cn/problems/rotate-image/)
+
+思路：
+
+1. **转置矩阵**：交换矩阵的行和列（`mat[i][j] <-> mat[j][i]`）。
+2. **翻转每一行**：对矩阵的每一行元素进行逆序反转（从左到右的元素变为从右到左)，利用`reverse` 函数（或手动交换）。
+
+```c++
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+         for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                swap(matrix[i][j], matrix[j][i]);
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            reverse(matrix[i].begin(), matrix[i].end());
+        }
+    }
+};
+```
+
+![image-20251003185925207](./top-100-liked.assets/image-20251003185925207.png)

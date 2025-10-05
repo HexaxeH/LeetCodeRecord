@@ -1113,3 +1113,28 @@ public:
 ```
 
 ![image-20251003185925207](./top-100-liked.assets/image-20251003185925207.png)
+
+#### [240. 搜索二维矩阵 II](https://leetcode.cn/problems/search-a-2d-matrix-ii/)
+
+思路：先获取矩阵的行数和列数，然后逐行遍历矩阵；对每一行，利用二分查找法（定义左右边界，通过计算中间位置并与目标值比较，动态调整边界范围）检查该行是否包含目标值，若找到则立即返回 true；若遍历完所有行仍未找到目标值，则返回 false。
+
+```c++
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int m = matrix.size(), n = matrix[0].size();
+        for(int i=0; i<m; ++i){
+            int left = 0, right = n-1;
+            while(left <= right){
+                int mid = left + (right - left) / 2;
+                if(matrix[i][mid] == target) return true;   
+                else if(matrix[i][mid] < target) left = mid + 1;
+                else right = mid - 1;
+            }
+        }
+        return false;
+    }
+};
+```
+
+![image-20251005235351261](./top-100-liked.assets/image-20251005235351261.png)

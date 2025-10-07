@@ -1138,3 +1138,49 @@ public:
 ```
 
 ![image-20251005235351261](./top-100-liked.assets/image-20251005235351261.png)
+
+#### [142. 环形链表 II](https://leetcode.cn/problems/linked-list-cycle-ii/)
+
+思路：双指针法，两次相遇定位环入口：
+
+1. **第一次相遇：检测是否有环**
+   - 初始化快慢指针 `fast` 和 `slow` 都指向头节点，`fast` 每次走 2 步，`slow` 每次走 1 步。
+   - 若 `fast` 走到链表末尾（`fast` 或 `fast->next` 为 `nullptr`），说明无环，返回 `nullptr`。
+   - 若 `fast` 与 `slow` 相遇，说明有环，进入下一步。
+2. **第二次相遇：定位环的入口**
+   - 将 `fast` 重新指向头节点，`slow` 留在相遇点。
+   - 两指针同时每次走 1 步，当它们再次相遇时，该节点就是环的入口，返回此节点。
+
+原理：第一次相遇时，`slow` 已走了 `n` 个环长，`fast` 走了 `2n` 个环长；第二次同速移动时，`fast` 从头走 `a` 步到入口，`slow` 从相遇点走 `a` 步也到入口（因 `a + n*环长` 是入口位置），故再次相遇点即入口。
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode* fast = head;
+        ListNode* slow = head;
+        while (true) {
+            if (fast == nullptr || fast->next == nullptr) return nullptr;
+            fast = fast->next->next;
+            slow = slow->next;
+            if (fast == slow) break;
+        }
+        fast = head;
+        while (slow != fast) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+        return fast;
+    }
+};
+```
+
+![image-20251007215502955](./top-100-liked.assets/image-20251007215502955.png)

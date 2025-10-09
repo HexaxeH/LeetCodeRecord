@@ -1184,3 +1184,49 @@ public:
 ```
 
 ![image-20251007215502955](./top-100-liked.assets/image-20251007215502955.png)
+
+#### [2. 两数相加](https://leetcode.cn/problems/add-two-numbers/)
+
+思路：利用逆序链表（个位在前）的特点，模拟手动加法过程：  
+
+1. 用哑节点简化结果链表的头节点处理，用变量记录进位；   
+2. 同步遍历两个链表，逐位取对应节点值（空节点取0），计算“两值+进位”的总和；   
+3. 总和的个位数作为当前位结果，更新进位（sum/10），并构建新节点；   
+4. 遍历至两链表结束且无进位，返回哑节点的下一个节点（结果链表头）。
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* dummy = new ListNode(0); // 哑节点
+        ListNode* current = dummy;
+        int carry = 0;
+        while (l1 != nullptr || l2 != nullptr || carry != 0) {
+            int x = (l1 != nullptr) ? l1->val : 0;
+            int y = (l2 != nullptr) ? l2->val : 0;
+            
+            int sum = x + y + carry;
+            carry = sum / 10; // 更新进位
+            current->next = new ListNode(sum % 10); // sum的个位数
+            current = current->next; 
+
+            if (l1 != nullptr) l1 = l1->next;
+            if (l2 != nullptr) l2 = l2->next;
+        }
+        
+        return dummy->next;
+    }
+};
+```
+
+![image-20251009233857661](./top-100-liked.assets/image-20251009233857661.png)

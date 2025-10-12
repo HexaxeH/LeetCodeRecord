@@ -1230,3 +1230,41 @@ public:
 ```
 
 ![image-20251009233857661](./top-100-liked.assets/image-20251009233857661.png)
+
+#### [19. 删除链表的倒数第 N 个结点](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/)
+
+思路：通过计算链表长度确定待删除节点的位置，再执行删除操作。先创建值为 0 且 next 指向原链表头节点的虚拟头节点 dummy，接着遍历原链表统计总长度 length，然后让 cur 指针从 dummy 出发，向后移动 length-n 次以定位到待删除节点的前驱节点，随后通过 cur->next = cur->next->next 跳过待删除节点完成删除操作，最后保存 dummy->next 作为新链表头节点并释放 dummy 节点，最终返回新头节点。
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode* dummy = new ListNode(0,head);
+        int length = 0;
+        while(head){
+            ++length;
+            head = head->next;
+        }
+        ListNode* cur = dummy;
+        for(int i=0;i < length-n;i++){
+            cur = cur->next;
+        }
+        cur->next = cur->next->next;
+        ListNode* ans = dummy->next;
+        delete dummy;
+        return ans;
+    }
+};
+```
+
+![image-20251012175541182](./top-100-liked.assets/image-20251012175541182.png)

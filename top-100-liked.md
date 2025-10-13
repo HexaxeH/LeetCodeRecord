@@ -1268,3 +1268,34 @@ public:
 ```
 
 ![image-20251012175541182](./top-100-liked.assets/image-20251012175541182.png)
+
+#### [24. 两两交换链表中的节点](https://leetcode.cn/problems/swap-nodes-in-pairs/)
+
+思路：用递归思路实现链表节点的两两交换，核心是将问题拆解为重复的子问题：首先判断终止条件 —— 若链表为空或仅有一个节点，无需交换，直接返回；否则，将当前头两个节点视为一对，原第二个节点成为新头节点（newHead），通过递归处理这对节点之后的剩余链表，再将原第一个节点的 next 指向递归处理后的子链表，新头节点的 next 指向原第一个节点，完成当前对的交换，最终返回新头节点。如此逐层递归，从局部到整体完成整个链表的两两交换。
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if (head == nullptr || head->next == nullptr) {
+            return head;
+        }
+        ListNode* newHead = head->next;
+        head->next = swapPairs(newHead->next);
+        newHead->next = head;
+        return newHead;
+    }
+};
+```
+
+![image-20251013183519500](./top-100-liked.assets/image-20251013183519500.png)

@@ -1299,3 +1299,46 @@ public:
 ```
 
 ![image-20251013183519500](./top-100-liked.assets/image-20251013183519500.png)
+
+[138. 随机链表的复制](https://leetcode.cn/problems/copy-list-with-random-pointer/)
+
+思路：通过哈希表实现带随机指针链表的复制，步骤清晰：首先遍历原链表，为每个节点创建值相同的新节点，并将原节点与新节点的对应关系存入哈希表；接着再次遍历原链表，借助哈希表快速找到每个新节点对应的 next 和 random 指针所指的新节点，完成新链表指针关系的构建；最后返回原链表头节点在哈希表中对应的新节点，即为复制链表的头节点。
+
+```c++
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        Node* cur = head;
+        unordered_map<Node*,Node*> map;
+        while(cur != nullptr){
+            map[cur] = new Node(cur->val);
+            cur = cur->next;
+        }
+        cur = head;
+        while(cur != nullptr){
+            map[cur]->next = map[cur->next];
+            map[cur]->random = map[cur->random];
+            cur = cur->next;
+        }
+        return map[head];
+    }
+};
+```
+
+![image-20251014224020905](./top-100-liked.assets/image-20251014224020905.png)

@@ -1405,3 +1405,100 @@ public:
 ```
 
 ![image-20251019141316267](./top-100-liked.assets/image-20251019141316267.png)
+
+#### [146. LRU 缓存](https://leetcode.cn/problems/lru-cache/)
+
+思路：根据 LRU 描述，我们至少需要一个数据结构来存节点的新旧程度，新的放一边，老的放另一边，双向链表恰好合适。但链表更新快，却无法快速通过 key 查节点，因此结合字典（哈希表）：字典存 `key=>节点` 的映射，实现定位；双向链表维护使用顺序，最新访问 / 插入的节点放在头部（靠近 `head` 哨兵），最久未使用的节点落到尾部（`head` 的前驱）。
+
+一共有 3 种操作：
+
+-   访问或更新已有节点（get/put 已存在的 key）：先通过哈希表找到节点，将其从当前位置移除后移到链表头部（标记为最新使用）。
+
+- 插入新节点（put 新 key）：创建新节点，通过哈希表记录映射关系，同时将节点直接插入链表头部。
+
+- 淘汰最久未使用节点：当缓存容量超限（哈希表大小超过 maxCapacity），需删除链表尾部节点（head->prev），并同步从哈希表中移除该节点的 key。
+
+  通用函数：addToHead：将指定节点插入链表头部。removeNode：从链表中移除指定节点。getAndMoveToHead 函数封装 “查字典定位节点 + 移到头部更新顺序” 的逻辑，是 `get` 和 `put` 接口的核心依赖，查到节点返回节点，未查到返回空。
+
+```c++
+struct CacheNode {
+    int key;
+    int value;
+    CacheNode* prev;
+    CacheNode* next;
+
+    CacheNode(int k = 0, int v = 0) : key(k), value(v), prev(nullptr), next(nullptr) {}
+};
+class LRUCache {
+private:
+    int maxCapacity;  // 最大容量
+    CacheNode* head;  // 哨兵头节点
+    unordered_map<int, CacheNode*> keyNodeMap;  // key到节点的映射
+
+    // 移除指定节点
+    void removeNode(CacheNode* node) {
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+    }
+
+    // 将节点插入到链表头部
+    void addToHead(CacheNode* node) {
+        node->prev = head;
+        node->next = head->next;
+        node->prev->next = node;
+        node->next->prev = node;
+    }
+
+     // 更新使用时间
+    CacheNode* getAndMoveToHead(int key) {
+        auto it = keyNodeMap.find(key);
+        if (it == keyNodeMap.end()) {  // 缓存未命中
+            return nullptr;
+        }
+        CacheNode* node = it->second;  // 缓存命中
+        removeNode(node); 
+        addToHead(node); 
+        return node;
+    }
+
+public:
+    LRUCache(int capacity ): maxCapacity(capacity), head(new CacheNode()) {
+        head->prev = head;
+        head->next = head;
+    }
+    
+    int get(int key) {
+        CacheNode* node = getAndMoveToHead(key);
+        return node ? node->value : -1;
+    }
+    
+    void put(int key, int value) {
+         CacheNode* node = getAndMoveToHead(key); 
+        if (node) {  
+            // 缓存已存在，更新值
+            node->value = value;
+            return;
+        }
+        // 缓存未存在，创建新节点
+        CacheNode* newNode = new CacheNode(key, value);
+        keyNodeMap[key] = newNode;
+        addToHead(newNode);  // 新增节点放到头部
+        
+        // 超过最大容量，移除最久未使用的节点（链表尾部）
+        if (keyNodeMap.size() > maxCapacity) {
+            CacheNode* leastUsedNode = head->prev;  // 尾部节点是最久未使用的
+            keyNodeMap.erase(leastUsedNode->key);
+            removeNode(leastUsedNode);
+        }
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
+```
+
+![image-20251022231054107](./top-100-liked.assets/image-20251022231054107.png)

@@ -1502,3 +1502,44 @@ public:
 ```
 
 ![image-20251022231054107](./top-100-liked.assets/image-20251022231054107.png)
+
+#### [102. 二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/)
+
+思路：采用队列实现二叉树的层序遍历，先将根节点入队，随后循环处理队列中各层节点：每次记录当前队列大小（即当前层节点数），依次取出该数量的节点，收集其值并将非空左右孩子入队，最终将每层节点值组成的列表存入结果，以此按层次顺序完成遍历。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public: 
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> res;
+        queue<TreeNode*> queue;
+        if (root != nullptr) queue.push(root);
+        while (!queue.empty()) {
+            int n = queue.size();
+            vector<int> level;
+            for (int i = 0; i < n; ++i) {
+                TreeNode* node = queue.front();
+                queue.pop();
+                level.push_back(node->val);
+                if (node->left != nullptr) queue.push(node->left);
+                if (node->right != nullptr) queue.push(node->right);
+            }
+            res.push_back(level);
+        }
+        return res;
+    }
+};
+```
+
+![image-20251024232403434](./top-100-liked.assets/image-20251024232403434.png)

@@ -1543,3 +1543,46 @@ public:
 ```
 
 ![image-20251024232403434](./top-100-liked.assets/image-20251024232403434.png)
+
+#### [98. 验证二叉搜索树](https://leetcode.cn/problems/validate-binary-search-tree/)
+
+思路：通过二叉搜索树“中序遍历结果为严格递增序列” 的特性解题：先对二叉树进行中序遍历（左→根→右），将所有节点值存入`vector`容器（`result`）；再遍历储节点值，若存在任意后一元素≤前一元素，则树无效，反之则有效。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {   
+        if (root == nullptr) {
+            return true;
+        }
+        vector<int> result;
+        traversal(root,result);
+        for (int i = 0; i < result.size() - 1; ++i) {
+            if (result[i + 1] <= result[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    void traversal(TreeNode* node,vector<int>& val){
+        if(node==nullptr)
+        return;
+        traversal(node->left,val);
+        val.push_back(node->val);
+        traversal(node->right,val);
+    }
+};
+```
+
+![image-20251027190900147](./top-100-liked.assets/image-20251027190900147.png)

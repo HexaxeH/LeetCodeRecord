@@ -1586,3 +1586,45 @@ public:
 ```
 
 ![image-20251027190900147](./top-100-liked.assets/image-20251027190900147.png)
+
+#### [230. 二叉搜索树中第 K 小的元素](https://leetcode.cn/problems/kth-smallest-element-in-a-bst/)
+
+思路：在上一题得二叉搜索树具有一个重要性质：二叉搜索树的中序遍历为递增序列。也就是说，本题可被转化为求中序遍历的第 k 个节点。递归遍历时计数，统计当前节点的序号。递归到第 k 个节点时，记录结果 res 后提前返回。即可找到的第 k 小元素。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+private:
+    int res;  // 第k小的结果
+    int count; // 计数第k个元素
+
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        count = k;
+        traversal(root);
+        return res; 
+    }
+    void traversal(TreeNode* node){
+        if(node==nullptr)
+        return;
+        traversal(node->left);
+        if (--count == 0) {
+            res = node->val;
+            return; 
+        }
+        traversal(node->right);
+    }
+};
+```
+
+![image-20251029221219998](./top-100-liked.assets/image-20251029221219998.png)

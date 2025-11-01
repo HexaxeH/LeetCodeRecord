@@ -1628,3 +1628,44 @@ public:
 ```
 
 ![image-20251029221219998](./top-100-liked.assets/image-20251029221219998.png)
+
+#### [199. 二叉树的右视图](https://leetcode.cn/problems/binary-tree-right-side-view/)
+
+思路：实现二叉树的右视图，只需在层序遍历的基础上，将每一层的最后一个元素加入结果数组即可。通过队列存储各层节点，每次处理一层时，先记录当前层的节点总数，然后依次遍历该层的每个节点，将其左右子节点加入队列以准备下一层的遍历。在遍历当前层的过程中，当遇到该层的最后一个节点（即索引等于当前层节点总数减 1 的节点）时，其值就是该层从右侧能看到的节点值，将其加入结果数组。最终，遍历完所有层后，结果数组便包含了从右侧观察二叉树时依次看到的各层节点值，即二叉树的右视图。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> res;
+        queue<TreeNode*> queue;
+        if (root != nullptr) queue.push(root);
+        while (!queue.empty()) {
+            int n = queue.size();
+            for (int i = 0; i < n; ++i) {
+                TreeNode* node = queue.front();
+                queue.pop();
+                if(i == n-1){
+                res.push_back(node->val);
+                }
+                if (node->left != nullptr) queue.push(node->left);
+                if (node->right != nullptr) queue.push(node->right);
+            }
+        }
+        return res;
+    }
+};
+```
+
+![image-20251101173021670](./top-100-liked.assets/image-20251101173021670.png)

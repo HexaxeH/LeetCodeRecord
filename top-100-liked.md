@@ -1711,3 +1711,39 @@ public:
 ```
 
 ![image-20251103200549209](./top-100-liked.assets/image-20251103200549209.png)
+
+#### [105. 从前序与中序遍历序列构造二叉树](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+
+思路：利用前序遍历（根 - 左 - 右）和中序遍历（左 - 根 - 右）的特性。每一次都先通过**前序遍历（preorder）**确定当前根节点（第一个元素必然是当前树的**根节点**），再划分左右子树的遍历序列，在**中序遍历（inorder）**中根据preorder中找到的根节划分左右子树（inorder根节点左侧的所有元素是**左子树的中序序列**，右侧是**右子树的中序序列**），还可计算左子树的节点个数，以此划分左右子树，递归构建左右子树，每次生成当前根节点并返回。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+         if (preorder.empty()) { // 空节点
+            return nullptr;
+        }
+        int left_size = ranges::find(inorder, preorder[0]) - inorder.begin(); // 左子树的大小
+        vector<int> preordernums1(preorder.begin() + 1, preorder.begin() + 1 + left_size);
+        vector<int> preordernums2(preorder.begin() + 1 + left_size, preorder.end());
+        vector<int> inordernums1(inorder.begin(), inorder.begin() + left_size);
+        vector<int> inordernums2(inorder.begin() + 1 + left_size, inorder.end());
+        TreeNode* left = buildTree(preordernums1, inordernums1);
+        TreeNode* right = buildTree(preordernums2, inordernums2);
+        return new TreeNode(preorder[0], left, right);
+    }
+};
+```
+
+![image-20251105182000259](./top-100-liked.assets/image-20251105182000259.png)

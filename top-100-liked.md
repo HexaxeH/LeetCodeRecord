@@ -1747,3 +1747,44 @@ public:
 ```
 
 ![image-20251105182000259](./top-100-liked.assets/image-20251105182000259.png)
+
+#### [437. 路径总和 III](https://leetcode.cn/problems/path-sum-iii/)
+
+思路：遍历二叉树时，用哈希表实时统计从根节点到当前路径上各前缀和的出现次数。对每个节点，计算其前缀和`s`后，通过哈希表查询`s - targetSum`的出现次数，即可得以此节点为终点的有效路径数；遍历完节点的左右子树后，从哈希表中移除当前前缀和（回溯），确保哈希表仅包含当前路径上的前缀和。累加所有节点对应的有效路径数，即为最终结果。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map<long long, int> cnt;
+    int target;
+    // 深度优先搜索
+    int dfs(TreeNode* node, long long currentSum){
+        if (!node) return 0;
+        currentSum += node->val;
+        int res = cnt[currentSum - target];
+        cnt[currentSum]++;
+        res += dfs(node->left, currentSum);
+        res += dfs(node->right, currentSum);
+        cnt[currentSum]--;
+        return res;
+    }
+    int pathSum(TreeNode* root, int targetSum) {
+        target = targetSum;
+        cnt[0] = 1;
+        return dfs(root, 0);
+    }
+};
+```
+
+![image-20251107233103761](./top-100-liked.assets/image-20251107233103761.png)

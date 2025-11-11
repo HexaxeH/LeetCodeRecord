@@ -1788,3 +1788,93 @@ public:
 ```
 
 ![image-20251107233103761](./top-100-liked.assets/image-20251107233103761.png)
+
+#### [236. 二叉树的最近公共祖先](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
+
+思路：首先进行先序遍历，从根节点出发依次访问当前节点、左子树、右子树，遇到空节点直接返回空（无目标节点）；若遇到节点 p 或 q，直接返回该节点（标记目标节点的存在，无需继续向下遍历）。之后开始从底至顶**回溯**，通过左右子树的返回结果判断当前节点是否满足公共祖先 LCA 的三种场景：
+
+1. p 和 q 在 root 的子树中，且分列 root 的 异侧（即分别在左、右子树中），则返回当前节点，其祖先节点会通过后续判断确认是否为更优 LCA；
+2. p=root ，且 q 在 root 的左或右子树中；
+3. q=root ，且 p 在 root 的左或右子树中；
+
+若当前节点是 p 或 q（对应场景 2、3），则返回当前节点，其祖先节点会通过后续判断确认是否为更优 LCA；
+
+若左右子树的返回结果均非空（对应场景 1），说明 p 和 q 分别在当前节点的异侧，当前节点即为 LCA，向上返回该节点；
+
+若仅一侧子树返回非空节点，另一侧为空，则说明 p 和 q 均在非空的那侧子树中，返回该侧子树的返回值（即目标节点或已找到的 LCA）；
+
+若两侧均返回空，则当前子树中无 p 和 q，返回空。最终，整个递归回溯过程会定位到唯一满足 LCA 场景的节点，即为结果。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+         if(root == nullptr || root == p || root == q) return root;
+        TreeNode *left = lowestCommonAncestor(root->left, p, q);
+        TreeNode *right = lowestCommonAncestor(root->right, p, q);
+        if(left == nullptr && right == nullptr) return nullptr; 
+        if(left == nullptr) return right; 
+        if(right == nullptr) return left; 
+        return root; 
+    }
+};
+```
+
+![image-20251111195140154](./top-100-liked.assets/image-20251111195140154.png)
+
+#### [200. 岛屿数量](https://leetcode.cn/problems/number-of-islands/)
+
+思路：
+
+1. **边界处理**：先判断网格是否为空，为空则直接返回 0（无岛屿）。
+2. **遍历网格**：循环遍历每个单元格，寻找未被标记的陆地（值为 '1'）。
+3. DFS 标记岛屿：一旦找到 '1'，说明发现新岛屿，立即DFS 递归：
+   - 先将当前单元格标记为 '2'（表示已访问，避免重复统计）。
+   - 递归遍历当前单元格的上下左右四个相邻单元格，只要相邻单元格是 '1'，就继续标记，直到覆盖整个连通的陆地区域。
+4. **统计岛屿数**：每完成一次 DFS 标记，就代表一个完整岛屿被统计，岛屿计数器加 1。
+5. 遍历完所有单元格后，计数器的值就是岛屿的总数量。
+
+```c++
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        if (grid.empty() || grid[0].empty()) return 0;
+        int rows = grid.size();    // 网格行数
+        int cols = grid[0].size(); // 网格列数
+        int islandCount = 0;       // 岛屿数量
+
+         for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                // 未标记的陆地
+                if (grid[i][j] == '1') {
+                    markWholeIsland(grid, i, j, rows, cols); // 标记整个连通岛屿
+                    islandCount++; // 岛屿数量+1
+                }
+            }
+        }
+        return islandCount;
+    }
+     void markWholeIsland(vector<vector<char>>& grid, int i, int j, int rows, int cols) {
+        if (i < 0 || i >= rows || j < 0 || j >= cols || grid[i][j] != '1') {
+            return;
+        }
+        grid[i][j] = '2'; // 标记当前陆地为已访问
+        // 递归遍历
+        markWholeIsland(grid, i - 1, j, rows, cols); // 上
+        markWholeIsland(grid, i + 1, j, rows, cols); // 下
+        markWholeIsland(grid, i, j - 1, rows, cols); // 左
+        markWholeIsland(grid, i, j + 1, rows, cols); // 右
+    }
+};
+```
+
+![image-20251111203310886](./top-100-liked.assets/image-20251111203310886.png)

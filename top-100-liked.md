@@ -1878,3 +1878,68 @@ public:
 ```
 
 ![image-20251111203310886](./top-100-liked.assets/image-20251111203310886.png)
+
+#### [994. 腐烂的橘子](https://leetcode.cn/problems/rotting-oranges/)
+
+思路：
+
+1. **状态更新函数**：定义一个`after`函数，其功能是根据当前网格中橘子的状态（新鲜或腐烂），计算出一分钟后网格的状态 —— 即所有腐烂橘子会向上下左右四个方向的新鲜橘子传播，使其变为腐烂橘子，空单元格状态不变。
+2. **循环模拟腐烂过程**：不断调用`after`函数更新网格状态，每次调用代表时间过去一分钟。持续这一过程，直到某次调用`after`函数前后，网格的状态完全相同（即没有新的橘子腐烂，腐烂过程停止）。
+3. **最终状态检查**：当腐烂过程停止后，检查此时的网格：
+   - 若仍存在新鲜橘子（状态为 1），说明这些橘子无法被感染，返回 - 1；
+   - 若所有新鲜橘子都已腐烂，返回从开始到腐烂停止所经历的时间（分钟数）。
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> after(vector<vector<int>>& grid){
+        vector<vector<int>> temp=grid;
+        for(int i=0;i<grid.size();i++){
+            for(int j=0;j<grid[i].size();j++){
+                if(grid[i][j]==2){
+                    //左
+                    if(j>0){
+                        if(grid[i][j-1]==1) temp[i][j-1]=2;
+                    }
+                    //右
+                    if(j+1<grid[i].size()){
+                        if(grid[i][j+1]==1) temp[i][j+1]=2;
+                    }
+                    //上
+                    if(i>0){
+                        if(grid[i-1][j]==1) temp[i-1][j]=2;
+                    }
+                    //下
+                    if(i+1<grid.size()){
+                        if(grid[i+1][j]==1) temp[i+1][j]=2;
+                    }
+                }
+            }
+        }
+        return temp;
+    }
+    int orangesRotting(vector<vector<int>>& grid) {       
+        int time=0,sign=0;
+        vector<vector<int>> temp;
+        //判断会不会进行更新了
+        while(temp!=grid){
+            if(time>0) grid=temp;
+            temp=after(grid);
+            time++;
+        }
+        //循环判断此时网格中是否有好橘子
+        for(int i=0;i<grid.size();i++){
+            for(int j=0;j<grid[i].size();j++){
+                if(grid[i][j]==1){
+                    sign=1;
+                    break;
+                }
+            }
+        }
+        if(sign) return -1;
+        else return time-1;
+    }
+};
+```
+
+![image-20251113234638955](./top-100-liked.assets/image-20251113234638955.png)

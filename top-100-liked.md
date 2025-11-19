@@ -1943,3 +1943,56 @@ public:
 ```
 
 ![image-20251113234638955](./top-100-liked.assets/image-20251113234638955.png)
+
+#### [207. 课程表](https://leetcode.cn/problems/course-schedule/)
+
+思路：先构建课程的入度数组（记录每门课的先修数量）和邻接表（记录课程间的后续依赖关系），再将入度为 0 的课程（无先修要求）入队；随后循环处理队列中的课程，每处理一门就减少其后续课程的入度，若后续课程入度变为 0 则入队，同时统计已处理课程数；最终通过比较处理数与总课程数，判断是否存在环（即能否完成所有课程）。
+
+```c++
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        
+        vector<int> inDegree(numCourses);
+        unordered_map<int, vector<int>> map;
+        for (int i = 0; i < prerequisites.size(); ++i) {
+            inDegree[prerequisites[i][0]]++; //记录入度
+            map[prerequisites[i][1]].push_back(prerequisites[i][0]);
+        }
+        queue<int> que;
+        for (int i = 0; i < numCourses; ++i) {
+            if (inDegree[i] == 0) que.push(i); 
+        }
+        int count = 0;
+        while (que.size()) {
+            int selected = que.front();
+            que.pop();
+            count++;
+            for (int i = 0; i < map[selected].size(); ++i) {
+                if (inDegree[map[selected][i]] > 0) {
+                    inDegree[map[selected][i]]--;
+                    if(inDegree[map[selected][i]] == 0) 
+                        que.push(map[selected][i]);
+                }
+            }
+
+        }
+        if (count == numCourses)
+            return true;
+        else
+            return false;
+
+    }
+};
+```
+
+![image-20251119134613670](./top-100-liked.assets/image-20251119134613670.png)
+
+#### [208. 实现 Trie (前缀树)](https://leetcode.cn/problems/implement-trie-prefix-tree/)
+
+思路：
+
+```c++
+
+```
+

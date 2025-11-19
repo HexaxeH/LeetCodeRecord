@@ -1990,9 +1990,54 @@ public:
 
 #### [208. 实现 Trie (前缀树)](https://leetcode.cn/problems/implement-trie-prefix-tree/)
 
-思路：
+思路：首先通过私有成员定义节点状态（`isEnd`标记节点是否为单词结尾）和子节点指针数组（`next[26]`对应 26 个英文字母的子节点），构造函数初始化节点为非结尾状态且所有子节点为空；插入单词时从根节点出发，逐个字符映射到数组索引（`c-'a'`），若对应子节点不存在则新建节点，最终将单词末尾节点标记为结尾；搜索单词时同样遍历字符，若中途子节点不存在则返回 false，遍历完成后校验是否为单词结尾
 
 ```c++
-
+class Trie {
+private:
+    bool isEnd;
+    Trie* next[26];
+public:
+    Trie() {
+        isEnd = false;
+        for (int i = 0; i < 26; ++i) {
+            next[i] = nullptr;
+        }
+    }
+    
+    void insert(string word) {
+        Trie* node = this;
+        for (char c : word) {
+            if (node->next[c-'a'] == NULL) {
+                node->next[c-'a'] = new Trie();
+            }
+            node = node->next[c-'a'];
+        }
+        node->isEnd = true;
+    }
+    
+    bool search(string word) {
+        Trie* node = this;
+        for (char c : word) {
+            node = node->next[c - 'a'];
+            if (node == NULL) {
+                return false;
+            }
+        }
+        return node->isEnd;
+    }
+    
+    bool startsWith(string prefix) {
+        Trie* node = this;
+        for (char c : prefix) {
+            node = node->next[c-'a'];
+            if (node == NULL) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
 ```
 
+![image-20251119234926146](./top-100-liked.assets/image-20251119234926146.png)
